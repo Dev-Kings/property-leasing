@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\LeaseResource\Pages;
-use App\Filament\Resources\LeaseResource\RelationManagers;
-use App\Models\Lease;
 use Filament\Forms;
-use Filament\Resources\Form;
-use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use App\Models\Lease;
+use Filament\Resources\Form;
+use Filament\Resources\Table;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\LeaseResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\LeaseResource\RelationManagers;
+use Filament\Forms\Components\TextInput;
 
 class LeaseResource extends Resource
 {
@@ -26,7 +27,7 @@ class LeaseResource extends Resource
                 Forms\Components\TextInput::make('lease_type')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('description')
+                TextInput::make('description')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -37,7 +38,7 @@ class LeaseResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('lease_type'),
-                Tables\Columns\TextColumn::make('description'),
+                Tables\Columns\TextColumn::make('description')->limit('50'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
@@ -54,14 +55,14 @@ class LeaseResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -70,5 +71,5 @@ class LeaseResource extends Resource
             'view' => Pages\ViewLease::route('/{record}'),
             'edit' => Pages\EditLease::route('/{record}/edit'),
         ];
-    }    
+    }
 }
