@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Lease extends Model
+class Location extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['lease_type', 'description'];
+    protected $fillable = ['location_name'];
 
     public function properties(){
-        return $this->hasMany(Property::class);
+        return $this->belongsToMany(Property::class);
     }
 }

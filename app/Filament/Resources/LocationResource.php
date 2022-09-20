@@ -2,33 +2,28 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\LocationResource\Pages;
+use App\Filament\Resources\LocationResource\RelationManagers;
+use App\Models\Location;
 use Filament\Forms;
-use Filament\Tables;
-use App\Models\Lease;
 use Filament\Resources\Form;
-use Filament\Resources\Table;
 use Filament\Resources\Resource;
+use Filament\Resources\Table;
+use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\LeaseResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\LeaseResource\RelationManagers;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
 
-class LeaseResource extends Resource
+class LocationResource extends Resource
 {
-    protected static ?string $model = Lease::class;
+    protected static ?string $model = Location::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-paper-clip';
+    protected static ?string $navigationIcon = 'heroicon-o-map';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('lease_type')
-                    ->required()
-                    ->maxLength(255),
-                Textarea::make('description')
+                Forms\Components\TextInput::make('location_name')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -38,8 +33,7 @@ class LeaseResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('lease_type'),
-                Tables\Columns\TextColumn::make('description')->limit('50'),
+                Tables\Columns\TextColumn::make('location_name')->sortable()->searchable(),
             ])
             ->filters([
                 //
@@ -52,21 +46,21 @@ class LeaseResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-
+    
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-
+    
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListLeases::route('/'),
-            'create' => Pages\CreateLease::route('/create'),
-            'view' => Pages\ViewLease::route('/{record}'),
-            'edit' => Pages\EditLease::route('/{record}/edit'),
+            'index' => Pages\ListLocations::route('/'),
+            'create' => Pages\CreateLocation::route('/create'),
+            'view' => Pages\ViewLocation::route('/{record}'),
+            'edit' => Pages\EditLocation::route('/{record}/edit'),
         ];
-    }
+    }    
 }

@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\CategoryResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CategoryResource\RelationManagers;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 
 class CategoryResource extends Resource
@@ -27,7 +28,7 @@ class CategoryResource extends Resource
                 Forms\Components\TextInput::make('category_name')
                     ->required()
                     ->maxLength(255),
-                TextInput::make('category_description')
+                Textarea::make('category_description')
                     ->required()
                     ->maxLength(255),
             ]);
