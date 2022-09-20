@@ -8,12 +8,13 @@ use App\Models\Lease;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\LeaseResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\LeaseResource\RelationManagers;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
+use App\Filament\Resources\LeaseResource\RelationManagers\PropertiesRelationManager;
 
 class LeaseResource extends Resource
 {
@@ -56,7 +57,7 @@ class LeaseResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            PropertiesRelationManager::class
         ];
     }
 

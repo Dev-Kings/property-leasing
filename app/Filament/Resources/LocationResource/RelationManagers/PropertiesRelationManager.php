@@ -1,31 +1,27 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\LocationResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Tables;
 use Livewire\Component;
-use App\Models\Property;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
-use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\PropertyResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use App\Filament\Resources\PropertyResource\RelationManagers;
-use App\Filament\Resources\PropertyResource\RelationManagers\LocationsRelationManager;
-use Filament\Forms\Components\Textarea;
+use App\Filament\Resources\PropertyResource\Pages\EditProperty;
 
-class PropertyResource extends Resource
+class PropertiesRelationManager extends RelationManager
 {
-    protected static ?string $model = Property::class;
+    protected static string $relationship = 'properties';
 
-    protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
+    protected static ?string $recordTitleAttribute = 'property_name';
 
     public static function form(Form $form): Form
     {
@@ -46,7 +42,7 @@ class PropertyResource extends Resource
                         ->required()
                         ->maxLength(255),
                     Forms\Components\Toggle::make('is_leased')
-                        ->visible(fn (Component $livewire): bool => $livewire instanceof Pages\EditProperty)
+                        ->visible(fn (Component $livewire): bool => $livewire instanceof EditProperty)
                         ->onColor('success')
                         ->offColor('danger'),
                 ])
@@ -69,29 +65,18 @@ class PropertyResource extends Resource
             ->filters([
                 //
             ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
+                Tables\Actions\AttachAction::make(),
+            ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DetachAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DetachBulkAction::make(),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            LocationsRelationManager::class
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListProperties::route('/'),
-            'create' => Pages\CreateProperty::route('/create'),
-            'view' => Pages\ViewProperty::route('/{record}'),
-            'edit' => Pages\EditProperty::route('/{record}/edit'),
-        ];
     }
 }
