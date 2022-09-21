@@ -10,6 +10,7 @@ use Filament\Resources\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\LeaseResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -19,6 +20,8 @@ use App\Filament\Resources\LeaseResource\RelationManagers\PropertiesRelationMana
 class LeaseResource extends Resource
 {
     protected static ?string $model = Lease::class;
+
+    protected static ?string $recordTitleAttribute = 'lease_type';
 
     protected static ?string $navigationIcon = 'heroicon-o-paper-clip';
 
@@ -39,7 +42,7 @@ class LeaseResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('lease_type'),
+                Tables\Columns\TextColumn::make('lease_type')->searchable(),
                 Tables\Columns\TextColumn::make('description')->limit('50'),
             ])
             ->filters([

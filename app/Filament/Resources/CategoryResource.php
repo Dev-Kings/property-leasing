@@ -10,6 +10,7 @@ use Filament\Resources\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\CategoryResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -19,6 +20,8 @@ use App\Filament\Resources\CategoryResource\RelationManagers\PropertiesRelationM
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
+
+    protected static ?string $recordTitleAttribute = 'category_name';
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
@@ -39,7 +42,7 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('category_name'),
+                Tables\Columns\TextColumn::make('category_name')->searchable(),
                 Tables\Columns\TextColumn::make('category_description')->limit('50'),
             ])
             ->filters([

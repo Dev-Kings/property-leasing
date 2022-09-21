@@ -8,6 +8,7 @@ use App\Models\Location;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\LocationResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -17,6 +18,8 @@ use App\Filament\Resources\LocationResource\RelationManagers\PropertiesRelationM
 class LocationResource extends Resource
 {
     protected static ?string $model = Location::class;
+
+    protected static ?string $recordTitleAttribute = 'location_name';
 
     protected static ?string $navigationIcon = 'heroicon-o-map';
 
@@ -37,7 +40,7 @@ class LocationResource extends Resource
                 Tables\Columns\TextColumn::make('location_name')->sortable()->searchable(),
             ])
             ->filters([
-                //
+                SelectFilter::make('properties')->relationship('properties', 'property_name')
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

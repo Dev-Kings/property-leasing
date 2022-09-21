@@ -10,8 +10,11 @@ use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
+use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\PropertyResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -19,11 +22,13 @@ use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use App\Filament\Resources\PropertyResource\RelationManagers;
 use App\Filament\Resources\PropertyResource\RelationManagers\LocationsRelationManager;
-use Filament\Forms\Components\Textarea;
+use App\Filament\Resources\PropertyResource\Widgets\StatsOverview;
 
 class PropertyResource extends Resource
 {
     protected static ?string $model = Property::class;
+
+    protected static ?string $recordTitleAttribute = 'property_name';
 
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
 
@@ -67,7 +72,13 @@ class PropertyResource extends Resource
                 Tables\Columns\BooleanColumn::make('is_leased')->sortable(),
             ])
             ->filters([
-                //
+                Filter::make('Leased')
+                    ->query(fn (Builder $query): Builder => $query->where('is_leased', true)),
+                Filter::make('Not Leased')
+                    ->query(fn (Builder $query): Builder => $query->where('is_leased', false)),
+                SelectFilter::make('category')->relationship('category', 'category_name'),
+                SelectFilter::make('lease')->relationship('lease', 'lease_type'),
+                SelectFilter::make('location')->relationship('locations', 'location_name')
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -82,6 +93,13 @@ class PropertyResource extends Resource
     {
         return [
             LocationsRelationManager::class
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            StatsOverview::class
         ];
     }
 
