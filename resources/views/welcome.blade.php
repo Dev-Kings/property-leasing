@@ -410,15 +410,16 @@
         @if (Route::has('login'))
         <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
             @auth
-            <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Dashboard</a>
+            {{-- <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Dashboard</a> --}}
+            <a href="/admin" class="text-sm text-gray-700 dark:text-gray-500 underline">Dashboard</a>
             @else
-            <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
+            {{-- <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a> --}}
 
             @if (Route::has('register'))
             <a href="{{ route('register') }}"
                 class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
             @endif
-            <a href="/admin" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Admin</a>
+            <a href="/admin" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Admin-login</a>
             @endauth
         </div>
         @endif
@@ -441,7 +442,7 @@
                     <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-t-0 md:border-l">
                         <div class="flex items-center">
                             <div class="ml-4 text-lg leading-7">
-                                <img src="{{ $property->getFirstMediaUrl('properties') }}" class="rounded-md" width="130px" height="130px">
+                                <img src="{{ $property->getFirstMediaUrl('properties') }}" width="130px" height="130px">
                             </div>
 
                             <div class="ml-4 text-lg leading-5 font-semibold"><a href="#"
